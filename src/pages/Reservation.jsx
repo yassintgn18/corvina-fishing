@@ -1,6 +1,13 @@
 import { useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
+import { trips } from '../data/trips';
+import { useAuth } from '../context/AuthContext'; 
+import { useNavigate } from 'react-router-dom';
 
 function Reservation() {
+    const [searchParams] = useSearchParams();
+    const tripId = searchParams.get('trip');
+    const preselectedTrip = tripId ? trips.find(t => t.id === parseInt(tripId)) : null;
   const [formData, setFormData] = useState({
     tripType: 'Initiation',
     date: '',
@@ -14,10 +21,37 @@ function Reservation() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
   
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    alert(`Réservation confirmée pour ${formData.name} ! Total: ${calculateTotal()} DH`);
+const { user } = useAuth(); // Add at top inside component
+
+// Replace the alert in handleSubmit with:
+const handleSubmit = (e) => {
+  e.preventDefault();
+  
+  if (!user) {
+    alert('Veuillez vous connecter pour réserver');
+    navigate('/connexion');
+    return;
+  }
+
+  const newBooking = {
+    id: Date.now(),
+    userId: user.id,
+    tripId: selectedTrip?.id || 1,
+    tripName: selectedTrip?.name || formData.tripType,
+    date: formData.date,
+    timeSlot: formData.timeSlot,
+    persons: formData.persons,
+    totalPrice: calculateTotal(),
+    createdAt: new Date().toISOString()
   };
+
+  const existingBookings = JSON.parse(localStorage.getItem('corvina_bookings') || '[]');
+  existingBookings.push(newBooking);
+  localStorage.setItem('corvina_bookings', JSON.stringify(existingBookings));
+
+  alert(`Réservation confirmée !`);
+  navigate('/mes-reservations');
+};
   
   const calculateTotal = () => {
     const prices = { Initiation: 150, Sportive: 300, Matin: 150, 'Après-midi': 200, 'Journée Complète': 400 };
@@ -35,18 +69,18 @@ function Reservation() {
         {/* Type de sortie */}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">Type de sortie</label>
-          <select 
+         <select 
             name="tripType"
             value={formData.tripType}
             onChange={handleChange}
             className="w-full border border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:border-[#0F2B3D]"
-          >
-            <option>Initiation - 150 DH</option>
-            <option>Sportive - 300 DH</option>
-            <option>Matin - 150 DH</option>
-            <option>Après-midi - 200 DH</option>
-            <option>Journée Complète - 400 DH</option>
-          </select>
+            >
+            {trips.map(t => (
+                <option key={t.id} selected={preselectedTrip?.id === t.id}>
+                {t.name} - {t.price} DH
+                </option>
+            ))}
+            </select>
         </div>
         
         {/* Date */}

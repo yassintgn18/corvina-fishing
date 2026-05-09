@@ -9,18 +9,22 @@ import Bateaux from './pages/Bateaux';
 import Boutique from './pages/Boutique';
 import Carte from './pages/Carte';
 import Reservation from './pages/Reservation';
+import Panier from './pages/Panier';
+import TripDetail from './pages/TripDetail';
+import HeroSection from './components/home/HeroSection';
+import Login from './pages/Login';
+import Register from './pages/Register';
+import MyAccount from './pages/MyAccount';
+import MyBookings from './pages/MyBookings';
+
+
 
 function HomePage() {
   const featuredTrips = trips.slice(0, 2);
   
   return (
     <>
-      <h1 className="text-3xl font-bold text-[#0F2B3D] mb-2">
-        Pêchez avec les Pros
-      </h1>
-      <p className="text-gray-500 mb-8">
-        Sorties guidées · Matériel premium · Sécurité garantie
-      </p>
+       <HeroSection />
       
       {/* Weather card */}
       <div className="bg-green-50 border border-green-200 rounded-2xl p-4 mb-8">
@@ -69,6 +73,13 @@ function App() {
           <Route path="/boutique" element={<Boutique />} />
           <Route path="/carte" element={<Carte />} />
           <Route path="/reservation" element={<Reservation />} />
+          <Route path="/panier" element={<Panier />} />
+          <Route path="/trip/:id" element={<TripDetail />} />
+          <Route path="/connexion" element={<Login />} />
+          <Route path="/inscription" element={<Register />} />
+          <Route path="/mon-compte" element={<MyAccount />} />
+          <Route path="/mes-reservations" element={<MyBookings />} />
+          
         </Routes>
       </main>
       

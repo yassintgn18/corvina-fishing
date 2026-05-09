@@ -1,48 +1,62 @@
+import { Link } from 'react-router-dom';
+
 function TripCard({ trip }) {
-  // Helper function to render stars based on rating (0-5)
   const renderStars = (rating) => {
     const fullStars = Math.floor(rating);
     const hasHalfStar = rating % 1 !== 0;
     let stars = [];
     
     for (let i = 0; i < fullStars; i++) {
-      stars.push("⭐");
+      stars.push("★");
     }
     if (hasHalfStar) {
-      stars.push("½⭐");
+      stars.push("½");
     }
-    return stars.join(" ");
+    return stars.join("");
   };
 
   return (
-    <div className="bg-white rounded-2xl shadow-sm overflow-hidden border border-gray-100 hover:shadow-md transition">
-      {/* Image placeholder */}
-      <div className="h-40 bg-gradient-to-br from-blue-200 to-blue-300 flex items-center justify-center text-4xl">
-        {trip.image || "🎣"}
-      </div>
+    <div className="group bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500 hover:-translate-y-2">
+      {/* Image section with overlay gradient */}
+      <div className="relative h-48 overflow-hidden bg-gray-200">
+        <img 
+            src={trip.image} 
+            alt={trip.name}
+            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
+        <div className="absolute top-3 right-3 bg-[#D4AF37] text-[#0F2B3D] text-xs font-bold px-2 py-1 rounded-full">
+            {trip.duration}
+        </div>
+        </div>
       
-      {/* Card content */}
-      <div className="p-4">
-        <div className="flex justify-between items-start">
-          <h3 className="text-lg font-bold text-[#0F2B3D]">{trip.name}</h3>
-          <span className="text-xl font-bold text-[#D4AF37]">{trip.price} DH</span>
+      {/* Content section */}
+      <div className="p-5">
+        <div className="flex justify-between items-start mb-2">
+          <h3 className="text-xl font-bold text-[#0F2B3D] group-hover:text-[#1a4a6e] transition-colors">
+            {trip.name}
+          </h3>
+          <span className="text-2xl font-bold text-[#D4AF37]">{trip.price} DH</span>
         </div>
         
-        <div className="flex items-center gap-2 mt-1 text-sm text-gray-500">
-          <span>{renderStars(trip.stars)}</span>
-          <span>({trip.stars})</span>
-        </div>
-        
-        <p className="text-sm text-gray-500 mt-2">{trip.description}</p>
-        
-        <div className="flex justify-between items-center mt-4">
-          <span className="text-xs bg-gray-100 rounded-full px-3 py-1 text-gray-600">
-            ⏱️ {trip.duration}
+        <div className="flex items-center gap-2 mb-3">
+          <span className="text-[#D4AF37] text-lg tracking-wide">
+            {renderStars(trip.stars)}
           </span>
-          <button className="text-[#0F2B3D] font-medium text-sm hover:underline">
-            Détails →
-          </button>
+          <span className="text-sm text-gray-400">({trip.stars})</span>
         </div>
+        
+        <p className="text-gray-500 text-sm leading-relaxed mb-4 line-clamp-2">
+          {trip.description}
+        </p>
+        
+        <Link 
+          to={`/trip/${trip.id}`}
+          className="inline-flex items-center gap-2 text-[#0F2B3D] font-semibold text-sm group/btn hover:gap-3 transition-all"
+        >
+          Découvrir
+          <span className="group-hover/btn:translate-x-1 transition-transform">→</span>
+        </Link>
       </div>
     </div>
   );

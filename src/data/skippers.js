@@ -5,6 +5,6 @@ export const skippers = [
     certified: true,
     stars: 5,
     experience: "12 ans",
-    image: "👨‍✈️"
+    image: "https://randomuser.me/api/portraits/men/32.jpg"
   }
 ];

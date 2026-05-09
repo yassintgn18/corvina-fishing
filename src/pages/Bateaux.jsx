@@ -18,9 +18,13 @@ function Bateaux() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
         {boats.map(boat => (
           <div key={boat.id} className="bg-white rounded-2xl shadow-sm overflow-hidden border border-gray-100">
-            <div className="h-32 bg-gradient-to-br from-blue-200 to-blue-300 flex items-center justify-center text-4xl">
-              {boat.image}
-            </div>
+            <div className="h-48 bg-gray-200 overflow-hidden">
+                <img 
+                    src={boat.image} 
+                    alt={boat.name}
+                    className="w-full h-full object-cover"
+                />
+                </div>
             <div className="p-4">
               <h3 className="text-lg font-bold text-[#0F2B3D]">{boat.name}</h3>
               <p className="text-sm text-gray-500 mt-1">{boat.capacity} · {boat.engine}</p>
