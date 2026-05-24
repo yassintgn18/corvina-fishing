@@ -18,6 +18,8 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import MyAccount from './pages/MyAccount';
 import MyBookings from './pages/MyBookings';
+import NotFound from './pages/NotFound';
+
 
 function HomePage() {
   const featuredTrips = trips.slice(0, 3);
@@ -146,6 +148,7 @@ function App() {
           <Route path="/inscription" element={<Register />} />
           <Route path="/mon-compte" element={<MyAccount />} />
           <Route path="/mes-reservations" element={<MyBookings />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </main>
       <Footer />

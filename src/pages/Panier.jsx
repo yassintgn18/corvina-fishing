@@ -118,9 +118,17 @@ function Panier() {
           <span className="font-bold text-[var(--text-primary)]">Total</span>
           <span className="text-2xl font-bold text-[var(--secondary)]">{totalPrice} DH</span>
         </div>
-        <button className="w-full bg-[var(--primary)] text-white rounded-full py-3 font-bold hover:bg-[var(--primary-dark)] transition">
-          Passer à la caisse
-        </button>
+        <button 
+  onClick={() => {
+    if (cart.length > 0) {
+      alert(`✅ Commande confirmée !\n\nTotal: ${totalPrice} DH\n\nUn email de confirmation vous sera envoyé.`);
+      clearCart();
+    }
+  }}
+  className="w-full bg-[var(--primary)] text-white rounded-full py-3 font-bold hover:bg-[var(--primary-dark)] transition"
+>
+  Passer à la caisse
+</button>
       </div>
     </div>
   );
