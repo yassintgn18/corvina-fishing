@@ -69,8 +69,18 @@ function Panier() {
       <div className="space-y-4 mb-6">
         {cart.map(item => (
           <div key={item.id} className="bg-[var(--surface)] rounded-2xl p-4 border border-[var(--border)] flex gap-4">
-            <div className="w-16 h-16 bg-gray-100 dark:bg-gray-800 rounded-xl flex items-center justify-center text-3xl">
-              {item.image || '🎣'}
+            {/* Product image - FIXED */}
+            <div className="w-16 h-16 bg-gray-100 dark:bg-gray-800 rounded-xl flex items-center justify-center overflow-hidden flex-shrink-0">
+              {item.image && item.image.startsWith('http') ? (
+                <img 
+                  src={item.image} 
+                  alt={item.name}
+                  className="w-full h-full object-cover"
+                  onError={(e) => { e.target.src = 'https://cdn-icons-png.flaticon.com/512/2964/2964847.png'; }}
+                />
+              ) : (
+                <span className="text-3xl">{item.image || '🎣'}</span>
+              )}
             </div>
 
             <div className="flex-1">
@@ -80,14 +90,14 @@ function Panier() {
               <div className="flex items-center gap-3 mt-2">
                 <button
                   onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                  className="w-8 h-8 rounded-full bg-[var(--border)] text-lg"
+                  className="w-8 h-8 rounded-full bg-[var(--border)] text-lg hover:bg-[var(--primary)]/10 transition"
                 >
                   -
                 </button>
                 <span className="font-medium">{item.quantity}</span>
                 <button
                   onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                  className="w-8 h-8 rounded-full bg-[var(--border)] text-lg"
+                  className="w-8 h-8 rounded-full bg-[var(--border)] text-lg hover:bg-[var(--primary)]/10 transition"
                 >
                   +
                 </button>

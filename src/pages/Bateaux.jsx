@@ -72,9 +72,14 @@ function Bateaux() {
         {skippers.map(skipper => (
           <div key={skipper.id} className="bg-[var(--surface)] rounded-2xl border border-[var(--border)] p-5 shadow-sm hover:shadow-md transition-all duration-300">
             <div className="flex items-center gap-5">
-              <div className="w-20 h-20 bg-gradient-to-br from-[var(--primary)]/20 to-[var(--primary)]/5 rounded-full flex items-center justify-center text-4xl">
-                {skipper.image}
-              </div>
+              <div className="w-20 h-20 bg-gradient-to-br from-[var(--primary)]/20 to-[var(--primary)]/5 rounded-full flex items-center justify-center overflow-hidden">
+  <img 
+    src={skipper.image} 
+    alt={skipper.name}
+    className="w-full h-full object-cover"
+    onError={(e) => { e.target.src = 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png'; }}
+  />
+</div>
               <div className="flex-1">
                 <div className="flex items-center flex-wrap gap-2">
                   <h3 className="text-xl font-bold text-[var(--text-primary)]">{skipper.name}</h3>
