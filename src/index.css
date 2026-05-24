@@ -1,57 +1,62 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&family=Playfair+Display:wght@400;500;600;700&display=swap');
-
+@import url('https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap');
+@import url('https://fonts.cdnfonts.com/css/clash-display');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
-  :root {
-    --primary: #0F2B3D;
-    --primary-light: #1a4a6e;
-    --secondary: #D4AF37;
-    --secondary-dark: #B8960F;
-    --background: #F8F6F0;
-    --surface: #FFFFFF;
-    --text-primary: #1E2A3A;
-    --text-secondary: #6B7A8A;
-    --success: #2E7D32;
-    --error: #D32F2F;
-    --warning: #FF9800;
+:root {
+  /* Light mode - Professional, high contrast */
+  --primary: #1A4D6B;
+  --primary-dark: #0F3A52;
+  --primary-light: #2A6B8F;
+  --secondary: #C49A2A;
+  --secondary-dark: #A8801E;
+  --accent: #D96941;
+  --background: #F5F2EB;
+  --surface: #FFFFFF;
+  --text-primary: #1A2C3A;
+  --text-secondary: #5A6E7A;
+  --border: #DDD6C8;
+  --success: #2A9D8F;
+  --error: #E76F51;
+  --warning: #F4A261;
+}
+
+  .dark {
+    --primary: #1A7A8A;
+    --primary-dark: #0D5D6D;
+    --primary-light: #2A9A8A;
+    --secondary: #E6A817;
+    --secondary-dark: #CC8F00;
+    --accent: #E06D5B;
+    --background: #121826;
+    --surface: #1E293B;
+    --text-primary: #F1F5F9;
+    --text-secondary: #94A3B8;
+    --border: #334155;
+    --success: #2A9D8F;
+    --error: #E76F51;
+    --warning: #F4A261;
   }
 
-  body {
-    font-family: 'Inter', sans-serif;
-    color: var(--text-primary);
-    background: linear-gradient(135deg, #F8F6F0 0%, #F0EDE4 100%);
-    position: relative;
-    scroll-behavior: smooth;
-  }
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Clash Display', 'Playfair Display', serif;
+  letter-spacing: -0.02em;
+}
 
-  body::before {
-    content: '';
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 1000'%3E%3Cpath fill='%230F2B3D' fill-opacity='0.03' d='M0,0 L1000,0 L1000,1000 L0,1000 Z M0,200 Q250,150 500,200 T1000,200'/%3E%3C/svg%3E");
-    background-repeat: repeat;
-    pointer-events: none;
-    z-index: -1;
-  }
+body {
+  font-family: 'Inter', sans-serif;
+}
 
-  h1, h2, h3, h4, h5, h6 {
-    font-family: 'Playfair Display', serif;
-  }
-
-  /* Custom scrollbar for modern browsers */
+  /* Custom scrollbar */
   ::-webkit-scrollbar {
     width: 8px;
     height: 8px;
   }
 
   ::-webkit-scrollbar-track {
-    background: #e5e7eb;
+    background: var(--border);
     border-radius: 10px;
   }
 
@@ -75,21 +80,21 @@
   }
 
   .btn-primary {
-    @apply bg-[#0F2B3D] text-white px-6 py-3 rounded-full font-semibold 
-           transition-all duration-300 hover:bg-[#1a4a6e] hover:shadow-lg 
+    @apply bg-[var(--primary)] text-white px-6 py-3 rounded-full font-semibold
+           transition-all duration-300 hover:bg-[var(--primary-dark)] hover:shadow-lg
            active:scale-95 disabled:opacity-50;
   }
 
   .btn-outline {
-    @apply border-2 border-[#0F2B3D] text-[#0F2B3D] px-6 py-3 rounded-full font-semibold 
-           transition-all duration-300 hover:bg-[#0F2B3D] hover:text-white 
+    @apply border-2 border-[var(--primary)] text-[var(--primary)] px-6 py-3 rounded-full font-semibold
+           transition-all duration-300 hover:bg-[var(--primary)] hover:text-white
            active:scale-95;
   }
 
   .input-primary {
-    @apply w-full border border-gray-200 rounded-xl px-5 py-3 
-           focus:outline-none focus:ring-2 focus:ring-[#0F2B3D] focus:border-transparent
-           transition-all duration-200;
+    @apply w-full border border-[var(--border)] rounded-xl px-5 py-3 bg-[var(--surface)]
+           text-[var(--text-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--primary)] 
+           focus:border-transparent transition-all duration-200;
   }
 }
 
@@ -115,4 +120,28 @@
     -webkit-box-orient: vertical;
     overflow: hidden;
   }
+}
+
+
+
+/* Safe bottom padding for mobile notches */
+.safe-bottom {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+/* Custom focus rings */
+*:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Smooth scrolling for anchor links */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Better button tap highlight on mobile */
+button, a {
+  -webkit-tap-highlight-color: transparent;
 }

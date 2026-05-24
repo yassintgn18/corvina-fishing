@@ -1,23 +1,54 @@
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
+import EmptyState from '../components/ui/EmptyState';
+import SkeletonCard from '../components/common/SkeletonCard';
 
 function Panier() {
   const { cart, removeFromCart, updateQuantity, clearCart, totalPrice } = useCart();
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setIsLoading(false), 500);
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (isLoading) {
+    return (
+      <div>
+        <div className="flex items-center gap-4 mb-6">
+          <div className="w-8 h-8 bg-gray-300 dark:bg-gray-700 rounded-full animate-pulse"></div>
+          <div className="h-8 bg-gray-300 dark:bg-gray-700 rounded w-48 animate-pulse"></div>
+        </div>
+        <div className="space-y-4">
+          {[1, 2, 3].map(i => (
+            <div key={i} className="bg-[var(--surface)] rounded-2xl p-4 border border-[var(--border)] flex gap-4">
+              <div className="w-16 h-16 bg-gray-300 dark:bg-gray-700 rounded-xl animate-pulse"></div>
+              <div className="flex-1">
+                <div className="h-5 bg-gray-300 dark:bg-gray-700 rounded w-32 mb-2 animate-pulse"></div>
+                <div className="h-4 bg-gray-300 dark:bg-gray-700 rounded w-20 animate-pulse"></div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
 
   if (cart.length === 0) {
     return (
       <div>
         <div className="flex items-center gap-4 mb-6">
-          <Link to="/" className="text-[#0F2B3D] text-xl">←</Link>
-          <h1 className="text-2xl font-bold text-[#0F2B3D]">Mon Panier</h1>
+          <Link to="/" className="text-[var(--primary)] text-xl">←</Link>
+          <h1 className="text-2xl font-bold text-[var(--text-primary)]">Mon Panier</h1>
         </div>
-        <div className="text-center py-10">
-          <div className="text-6xl mb-4">🛒</div>
-          <h2 className="text-xl text-gray-600 mb-2">Votre panier est vide</h2>
-          <Link to="/boutique" className="text-[#0F2B3D] underline">
-            Découvrir nos produits →
-          </Link>
-        </div>
+        <EmptyState
+          icon="🛒"
+          title="Votre panier est vide"
+          message="Ajoutez des produits depuis notre boutique"
+          buttonText="Découvrir nos produits"
+          buttonLink="/boutique"
+        />
       </div>
     );
   }
@@ -25,48 +56,44 @@ function Panier() {
   return (
     <div>
       <div className="flex items-center gap-4 mb-6">
-        <Link to="/" className="text-[#0F2B3D] text-xl">←</Link>
-        <h1 className="text-2xl font-bold text-[#0F2B3D]">Mon Panier</h1>
-        <button 
+        <Link to="/" className="text-[var(--primary)] text-xl">←</Link>
+        <h1 className="text-2xl font-bold text-[var(--text-primary)]">Mon Panier</h1>
+        <button
           onClick={clearCart}
-          className="ml-auto text-sm text-red-500 hover:underline"
+          className="ml-auto text-sm text-[var(--error)] hover:underline"
         >
           Vider le panier
         </button>
       </div>
 
-      {/* Cart items */}
       <div className="space-y-4 mb-6">
         {cart.map(item => (
-          <div key={item.id} className="bg-white rounded-2xl p-4 border border-gray-100 flex gap-4">
-            {/* Product image/icon */}
-            <div className="w-16 h-16 bg-gray-100 rounded-xl flex items-center justify-center text-3xl">
+          <div key={item.id} className="bg-[var(--surface)] rounded-2xl p-4 border border-[var(--border)] flex gap-4">
+            <div className="w-16 h-16 bg-gray-100 dark:bg-gray-800 rounded-xl flex items-center justify-center text-3xl">
               {item.image || '🎣'}
             </div>
-            
-            {/* Product info */}
+
             <div className="flex-1">
-              <h3 className="font-bold text-[#0F2B3D]">{item.name}</h3>
-              <p className="text-[#D4AF37] font-semibold">{item.price} DH</p>
-              
-              {/* Quantity controls */}
+              <h3 className="font-bold text-[var(--text-primary)]">{item.name}</h3>
+              <p className="text-[var(--secondary)] font-semibold">{item.price} DH</p>
+
               <div className="flex items-center gap-3 mt-2">
-                <button 
+                <button
                   onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                  className="w-8 h-8 rounded-full bg-gray-100 text-lg"
+                  className="w-8 h-8 rounded-full bg-[var(--border)] text-lg"
                 >
                   -
                 </button>
                 <span className="font-medium">{item.quantity}</span>
-                <button 
+                <button
                   onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                  className="w-8 h-8 rounded-full bg-gray-100 text-lg"
+                  className="w-8 h-8 rounded-full bg-[var(--border)] text-lg"
                 >
                   +
                 </button>
-                <button 
+                <button
                   onClick={() => removeFromCart(item.id)}
-                  className="ml-auto text-red-500 text-sm hover:underline"
+                  className="ml-auto text-[var(--error)] text-sm hover:underline"
                 >
                   Supprimer
                 </button>
@@ -76,13 +103,12 @@ function Panier() {
         ))}
       </div>
 
-      {/* Total and checkout */}
-      <div className="bg-white rounded-2xl p-4 border border-gray-100 sticky bottom-20">
+      <div className="bg-[var(--surface)] rounded-2xl p-4 border border-[var(--border)] sticky bottom-20">
         <div className="flex justify-between items-center mb-4">
-          <span className="font-bold text-[#0F2B3D]">Total</span>
-          <span className="text-2xl font-bold text-[#D4AF37]">{totalPrice} DH</span>
+          <span className="font-bold text-[var(--text-primary)]">Total</span>
+          <span className="text-2xl font-bold text-[var(--secondary)]">{totalPrice} DH</span>
         </div>
-        <button className="w-full bg-[#0F2B3D] text-white rounded-full py-3 font-bold hover:bg-[#1a4a6e] transition">
+        <button className="w-full bg-[var(--primary)] text-white rounded-full py-3 font-bold hover:bg-[var(--primary-dark)] transition">
           Passer à la caisse
         </button>
       </div>
